@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>FlowChart to SQL</title>
+	<script src="node_modules/konva/konva.js"></script>
+</head>
+<body>
+
+<h1>
+	FlowChart to SQL
+	<button onclick="addRow()">Add Row</button>
+</h1>
+
+<div id="container"></div>
+<script>
+
+	var width = window.innerWidth;
+	var height = window.innerHeight;
+	var stepHeight = height / 6;
+	var stepCenter = stepHeight / 2;
+	var stageCenter = width / 2;
+
+	var stage = new Konva.Stage({
+		container: 'container',
+		width: width,
+		height: height,
+		draggable: true
+	});
+	var layer = new Konva.Layer();
+
+	console.log('stepCenter 1 '+stepCenter);
+
+	function addRow(){
+		console.log('addRow');
+	}
+
+	function addThing(){
+
+	}
+
+	var rect = new Konva.Rect({
+		x: stageCenter,
+		y: stepCenter,
+		width: stepHeight / 2,
+		height: stepHeight / 2,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 1,
+		rotation: 45,
+		shadowColor: 'black',
+		shadowBlur: 10,
+		shadowOffset: [10, 10],
+		shadowOpacity: 0.2,
+		_nodeData: {
+			"hallo": "data!"
+		}
+	});
+
+	var complexText = new Konva.Text({
+		x: stageCenter,
+		y: stepCenter,
+		offsetY: -((stepHeight / 2) / 2),
+		offsetX: +(300 / 2),
+		text: 'Origin',
+		fontSize: 18,
+		fontFamily: 'Calibri',
+		fill: '#555',
+		height: 50,
+		width: 300,
+		padding: 20,
+		align: 'center'
+	});
+
+	layer.add(rect);
+	layer.add(complexText);
+
+	stepCenter = (stepHeight * 2) / 2;
+
+	console.log('stepCenter 2 '+stepCenter);
+
+	var rect2 = new Konva.Rect({
+		x: stageCenter,
+		y: stepCenter + stepHeight,
+		width: stepHeight / 2,
+		height: stepHeight / 2,
+		fill: 'white',
+		stroke: 'black',
+		strokeWidth: 1,
+		rotation: 45,
+		shadowColor: 'black',
+		shadowBlur: 10,
+		shadowOffset: [10, 10],
+		shadowOpacity: 0.2,
+		_nodeData: {
+			"hallo": "data!"
+		}
+	});
+
+	var complexText2 = new Konva.Text({
+		x: stageCenter,
+		y: stepCenter + stepHeight,
+		offsetY: -((stepHeight / 2) / 2),
+		offsetX: +(300 / 2),
+		text: 'Origin',
+		fontSize: 18,
+		fontFamily: 'Calibri',
+		fill: '#555',
+		height: 50,
+		width: 300,
+		padding: 20,
+		align: 'center'
+	});
+
+	layer.add(rect2);
+	layer.add(complexText2);
+
+	stage.add(layer);
+
+	// save stage as a json string
+	var json = stage.toJSON();
+	console.log(json);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	// MOUSEWHEEL ZOOM
+	var scaleBy = 1.04;
+	window.addEventListener('wheel', function(e){
+
+		e.preventDefault();
+
+		var oldScale = stage.scaleX();
+		var mousePointTo = {
+			x: stage.getPointerPosition().x / oldScale - stage.x() / oldScale,
+			y: stage.getPointerPosition().y / oldScale - stage.y() / oldScale
+		};
+
+		var newScale = e.deltaY > 0 ? oldScale * scaleBy : oldScale / scaleBy;
+		stage.scale({ x: newScale, y: newScale });
+		var newPos = {
+			x: -(mousePointTo.x - stage.getPointerPosition().x / newScale) * newScale,
+			y: -(mousePointTo.y - stage.getPointerPosition().y / newScale) * newScale
+		};
+		stage.position(newPos);
+		stage.batchDraw();
+	});
+</script>
+
+
+<script src="app.js"></script>
+
+</body>
+</html>
